@@ -1,1 +1,68 @@
-/* You will write the CSS rules for your Cookie Clicker game here! */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0px;
+}
+
+img {
+    height: 100px;
+}
+
+.column-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    min-width: 650px;
+}
+
+.column {
+    display: flex;
+    margin: 10px;
+    margin-top: 5px;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container-left {
+    display: flex;
+    margin-top: 200px;
+    margin-left: 5px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.column-header {
+    font-size: 25px;
+    position: relative;
+    background-color: #fff;
+    top: 8px;
+}
+
+.counting-container {
+    font-size: 30px;
+    margin: 10px;
+}
+
+#coffee-pic {
+    cursor: pointer;
+}
+
+#producer-container {
+    padding: 10px;
+    overflow: auto;
+    border: 2px black solid;
+    border-radius: 5px;
+}
+
+.coffee-per-second-container {
+    font-size: 20px;
+    padding: 10px;
+}
+
+p {
+    font-size: 20px;
+}
