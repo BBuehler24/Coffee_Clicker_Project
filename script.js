@@ -11,9 +11,11 @@
 const body = document.querySelector('body');
 const div = document.querySelector('.container-right');
 const coffeeButton = document.querySelector("#coffee-pic");
+const coffeeCountTally = document.querySelector('.counting-container');
+const cpsTally = document.querySelector('#coffee-per-second');
 
-let sumCPS = 0;
-let coffee = 0;
+let sumCPS = 100;
+let coffeeScore = 0;
 
 const coffeeProducers = [
 {
@@ -66,6 +68,10 @@ for (producer of coffeeProducers) {
     // what is some info we can add to the button so we can know which button was clicked which object is coorespondes to?
     button.id = producer.id;
     button.name = producer.name;
+    button.addEventListener('click', (event) => {
+        target = event.target.name
+        console.log(target);
+    });
     div.appendChild(h2);
     div.appendChild(button);
     div.appendChild(quantity);
@@ -76,115 +82,61 @@ for (producer of coffeeProducers) {
 
 render();
 
-// Inputs: producers & coffeeTally. Iterates over coffeeProducers, turns
-// isVisible to false, if coffeeTally is more or equal to 1/2 price of producer cost
-// & is not already visible, turns isVisible to true.
-function makeProducerVisible (coffeeProducers, coffeeTally) {
-    coffeeProducers.forEach((coffeeProducer) => {
-        if (coffeeTally >= coffeeProducer.cost / 2 && !coffeeProducer.isVisible) {
-            coffeeProducer.isVisible = true;
-        }
-    });
-}
-
-// Grabs the "Coffee" tally & updates to input.
-function updateCoffeeTotal (coffeeSum) {
-    const coffeeTally = document.querySelector('.counting-container');
-    coffeeTally.textContent = coffeeSum;
-};
-
-// Increases coffee tally +1, runs updateCoffeeTotal function to update tally, runs showProducer function
-function coffeeClicker () {
-    coffee++;
-    updateCoffeeTotal(coffee);
-}
-
-// Iterates over coffeeProducers & returns ones that show isVisible = true;
-function getVisibleProducers () {
-    return coffeeProducers.filter((coffeeProducer) => {
-        return coffeeProducer.isVisible;
-    });
-}
-
-// console.log(getVisibleProducers())
-
-// grabs the producer container, runs both makeProducerVisble & getVisibleProducer
-// functions, iterates over appends.
-// function showProducer () {
-//     makeProducerVisible(coffeeProducers, coffee);
-//     getVisibleProducers().forEach((producer) => {
-
-//     });
-// }
-
-// console.log(showProducer());
-
-function buyButton (event) {
-    const target = event.target;
-    // if (target.tagName !== 'button') {
-    //     console.log('fart');
-    // }
-    if (!buyProducer(target.id.slice(4))) {
-        alert('Not Enough Coffee To Buy!!')
+chemexButton.addEventListener('click', function (event) {
+    if (coffeeScore >= 10) {
+        coffeeScore = coffeeScore - 10 + 1;
+        coffeeCountTally.innerHTML = coffeeScore;
+        sumCPS++;
+        cpsTally.innerHTML = sumCPS;
     } else {
-        showProducer();
-        updateCoffeeTotal(coffee);
-        totalCPSUpdate(sumCPS);
-}
-};
-
-function getProducerId (producerId) {
-    const producer = coffeeProducers.filter ((producer) => {
-        console.log(producer)
-        producer.id === producerId
-        console.log(producerId);
-    });
-    return producer[0];
-}
-
-function checkAffordability (producerId) {
-    const producer = getProducerId(producerId);
-    if (coffee >= producer.cost) {
-        return true;
-    } else return false;
-}
-
-function buyProducer (producerId) {
-    if (checkAffordability(producerId)) {
-        let producer = getProducerId(producerId);
-        producer.quantity++;
-        coffee -= producer.cost;
-        sumCPS += producer.rate;
-        return true;
+        alert('Not Enough Coffee To Buy');
     }
-    return false;
-}
-
-// console.log(buyProducer())
-
-function totalCPSUpdate (cps) {
-    const coffeePSecond = document.querySelector('#coffee-per-second');
-    coffeePSecond.innerText = cps;
-}
-
-function coffeeTicker () {
-    coffee += sumCPS;
-    updateCoffeeTotal(coffee);
-    // showProducer();
-}
-
-const coffeeIcon = document.getElementById('coffee-pic');
-coffeeIcon.addEventListener('click', () => {
-    coffeeClicker();
 });
 
-const producerPurchase = document.querySelector('#producer-container');
-    producerPurchase.addEventListener('click', (event) => {
-        buyButton(event);
-        console.log(producerPurchase);
-    });
+chemexButton.addEventListener('click', function (event) {
+    coffeeScore = coffeeScore + 1;
+    coffeeCountTally.innerHTML = coffeeScore;
+});
 
-setInterval(() => coffeeTicker(), 1000);
+frenchPressButton.addEventListener('click', function (event) {
+    if (coffeeScore >= 50) {
+        coffeeScore = coffeeScore - 50 + 2;
+        coffeeCountTally.innerHTML = coffeeScore;
+        sumCPS += 2;
+        cpsTally.innerHTML = sumCPS;
+    } else {
+        alert('Not Enough Coffee To Buy');
+    }
+});
+
+frenchPressButton.addEventListener('click', function (event) {
+    coffeeScore = coffeeScore + 2;
+    coffeeCountTally.innerHTML = coffeeScore;
+});
+
+mrCoffeeButton.addEventListener('click', function (event) {
+    if (coffeeScore >= 100) {
+        coffeeScore = coffeeScore - 100 + 5;
+        coffeeCountTally.innerHTML = coffeeScore;
+        sumCPS += 5;
+        cpsTally.innerHTML = sumCPS;
+    } else {
+        alert('Not Enough Coffee To Buy');
+    }
+});
+
+mrCoffeeButton.addEventListener('click', function (event) {
+    coffeeScore = coffeeScore + 5;
+    coffeeCountTally.innerHTML = coffeeScore;
+});
+
+setInterval(function () {
+    if (sumCPS > 0) {
+        coffeeScore += sumCPS;
+        coffeeCountTally.innerHTML = coffeeScore;
+    }
+}, 1000);
+
 
 // 1. render producers (text)
 // 2. coffeeTotal (tallys coffe's total)
