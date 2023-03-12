@@ -14,7 +14,7 @@ const coffeeButton = document.querySelector("#coffee-pic");
 const coffeeCountTally = document.querySelector('.counting-container');
 const cpsTally = document.querySelector('#coffee-per-second');
 
-let sumCPS = 100;
+let sumCPS = 0;
 let coffeeScore = 0;
 
 const coffeeProducers = [
@@ -69,7 +69,8 @@ for (producer of coffeeProducers) {
     button.id = producer.id;
     button.name = producer.name;
     button.addEventListener('click', (event) => {
-        target = event.target.name
+        const target = event.target;
+        handleBuyProducer(producer);
         console.log(target);
     });
     div.appendChild(h2);
@@ -82,60 +83,93 @@ for (producer of coffeeProducers) {
 
 render();
 
-chemexButton.addEventListener('click', function (event) {
-    if (coffeeScore >= 10) {
-        coffeeScore = coffeeScore - 10 + 1;
+function handleBuyProducer (producer) {
+    if (coffeeScore >= producer.cost) {
+        coffeeScore -= producer.cost;
+        sumCPS += producer.rate;
         coffeeCountTally.innerHTML = coffeeScore;
-        sumCPS++;
         cpsTally.innerHTML = sumCPS;
     } else {
-        alert('Not Enough Coffee To Buy');
+        alert('Not Enough Coffee To Buy!!')
     }
-});
+}
 
-chemexButton.addEventListener('click', function (event) {
-    coffeeScore = coffeeScore + 1;
-    coffeeCountTally.innerHTML = coffeeScore;
-});
-
-frenchPressButton.addEventListener('click', function (event) {
-    if (coffeeScore >= 50) {
-        coffeeScore = coffeeScore - 50 + 2;
-        coffeeCountTally.innerHTML = coffeeScore;
-        sumCPS += 2;
-        cpsTally.innerHTML = sumCPS;
-    } else {
-        alert('Not Enough Coffee To Buy');
-    }
-});
-
-frenchPressButton.addEventListener('click', function (event) {
-    coffeeScore = coffeeScore + 2;
-    coffeeCountTally.innerHTML = coffeeScore;
-});
-
-mrCoffeeButton.addEventListener('click', function (event) {
-    if (coffeeScore >= 100) {
-        coffeeScore = coffeeScore - 100 + 5;
-        coffeeCountTally.innerHTML = coffeeScore;
-        sumCPS += 5;
-        cpsTally.innerHTML = sumCPS;
-    } else {
-        alert('Not Enough Coffee To Buy');
-    }
-});
-
-mrCoffeeButton.addEventListener('click', function (event) {
-    coffeeScore = coffeeScore + 5;
-    coffeeCountTally.innerHTML = coffeeScore;
+const coffeeIcon = document.getElementById('coffee-pic');
+coffeeIcon.addEventListener('click', () => {
+    coffeeScore++;
+    coffeeCountTally.innerHTML = 'Coffee ' + coffeeScore;
 });
 
 setInterval(function () {
     if (sumCPS > 0) {
         coffeeScore += sumCPS;
-        coffeeCountTally.innerHTML = coffeeScore;
+        coffeeCountTally.innerHTML = 'Coffee ' + coffeeScore;
     }
 }, 1000);
+
+
+// function updateCoffeeTotal (coffeeScore) {
+//     const coffeeTally = document.querySelector('.counting-container');
+//     coffeeTally.textContent = coffeeScore;
+// };
+
+// function coffeeClicker () {
+//     coffeeScore++;
+//     updateCoffeeTotal(coffeeScore);
+// }
+
+// function coffeeTicker () {
+//     coffeeScore += sumCPS;
+//     updateCoffeeTotal(coffeeScore);
+// }
+
+// chemexButton.addEventListener('click', function (event) {
+//     if (coffeeScore >= 10) {
+//         coffeeScore = coffeeScore - 10 + 1;
+//         coffeeCountTally.innerHTML = coffeeScore;
+//         sumCPS++;
+//         cpsTally.innerHTML = sumCPS;
+//     } else {
+//         alert('Not Enough Coffee To Buy');
+//     }
+// });
+
+// chemexButton.addEventListener('click', function (event) {
+//     coffeeScore = coffeeScore + 1;
+//     coffeeCountTally.innerHTML = coffeeScore;
+// });
+
+// frenchPressButton.addEventListener('click', function (event) {
+//     if (coffeeScore >= 50) {
+//         coffeeScore = coffeeScore - 50 + 2;
+//         coffeeCountTally.innerHTML = coffeeScore;
+//         sumCPS += 2;
+//         cpsTally.innerHTML = sumCPS;
+//     } else {
+//         alert('Not Enough Coffee To Buy');
+//     }
+// });
+
+// frenchPressButton.addEventListener('click', function (event) {
+//     coffeeScore = coffeeScore + 2;
+//     coffeeCountTally.innerHTML = coffeeScore;
+// });
+
+// mrCoffeeButton.addEventListener('click', function (event) {
+//     if (coffeeScore >= 100) {
+//         coffeeScore = coffeeScore - 100 + 5;
+//         coffeeCountTally.innerHTML = coffeeScore;
+//         sumCPS += 5;
+//         cpsTally.innerHTML = sumCPS;
+//     } else {
+//         alert('Not Enough Coffee To Buy');
+//     }
+// });
+
+// mrCoffeeButton.addEventListener('click', function (event) {
+//     coffeeScore = coffeeScore + 5;
+//     coffeeCountTally.innerHTML = coffeeScore;
+// });
 
 
 // 1. render producers (text)
