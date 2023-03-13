@@ -69,15 +69,14 @@ for (producer of coffeeProducers) {
     button.id = producer.id;
     button.name = producer.name;
     button.addEventListener('click', (event) => {
-        const target = event.target;
+        const producer = coffeeProducers.find(p => p.id == event.target.id); // pulls the producer id off the target, finds in the array, then passes it into buy.
         handleBuyProducer(producer);
-        console.log(target);
     });
     div.appendChild(h2);
-    div.appendChild(button);
     div.appendChild(quantity);
     div.appendChild(coffeePerSecond);
     div.appendChild(cost);
+    div.appendChild(button);
 }
 };
 
@@ -87,7 +86,7 @@ function handleBuyProducer (producer) {
     if (coffeeScore >= producer.cost) {
         coffeeScore -= producer.cost;
         sumCPS += producer.rate;
-        coffeeCountTally.innerHTML = coffeeScore;
+        coffeeCountTally.innerHTML = `Coffee: ${coffeeScore}`;
         cpsTally.innerHTML = sumCPS;
     } else {
         alert('Not Enough Coffee To Buy!!')
@@ -97,16 +96,43 @@ function handleBuyProducer (producer) {
 const coffeeIcon = document.getElementById('coffee-pic');
 coffeeIcon.addEventListener('click', () => {
     coffeeScore++;
-    coffeeCountTally.innerHTML = 'Coffee ' + coffeeScore;
+    coffeeCountTally.innerHTML = `Coffee: ${coffeeScore}`;
 });
 
 setInterval(function () {
     if (sumCPS > 0) {
         coffeeScore += sumCPS;
-        coffeeCountTally.innerHTML = 'Coffee ' + coffeeScore;
+        coffeeCountTally.innerHTML = `Coffee: ${coffeeScore}`;
     }
 }, 1000);
 
+function resetGame () {
+    window.localStorage.clear();
+    location.reload();
+}
+
+const resetButton = document.querySelector('#reset');
+resetButton.addEventListener('click', resetGame);
+
+// Testing Code I was not able to get working below (mostly involving isVisible logic):
+
+// Iterates over coffeeProducers & returns ones that show isVisible = true;
+// function getVisibleProducers () {
+//     return coffeeProducers.filter((coffeeProducer) => {
+//         return coffeeProducer.isVisible;
+//     });
+// }
+
+// grabs the producer container, runs both makeProducerVisble & getVisibleProducer
+// functions, iterates over appends.
+// function showProducer () {
+//     makeProducerVisible(coffeeProducers, coffee);
+//     getVisibleProducers().forEach((producer) => {
+
+//     });
+// }
+
+// console.log(showProducer());
 
 // function updateCoffeeTotal (coffeeScore) {
 //     const coffeeTally = document.querySelector('.counting-container');
